@@ -18,11 +18,15 @@ app.use(express.static("public"));
 //establish connection to the database
 mongoose.connect("mongodb://localhost:27017/shoppingDB", {
   useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
 
 //create database schema
 const itemsSchema = mongoose.Schema({
-  name: String,
+  name: {
+    type: String,
+    required: (true, "This field cannot be empty"),
+  },
 });
 
 //create a model using mongoose
@@ -42,39 +46,83 @@ const item2 = new Item({
 
 const defaultItems = [item1, item2];
 
-Item.insertMany(defaultItems, (err) => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log("Successfully created the documents");
-  }
+//create custom lists
+
+const listSchema = mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  items: [itemsSchema],
 });
 
-//listing all items
+const List = mongoose.model("List", listSchema);
 
 ////////////-------------------------------routes-------------------------------//////////
 app.get("/", function (req, res) {
   const day = date.getDate();
 
   Item.find({}, (err, foundItems) => {
-    res.render("list", { listTitle: day, newListItems: foundItems });
+    if (foundItems.length === 0) {
+      Item.insertMany(defaultItems, (err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("Successfully created the documents");
+        }
+      });
+      res.redirect("/");
+    } else {
+      res.render("list", { listTitle: day, newListItems: foundItems });
+    }
+  });
+});
+
+app.get("/:customListName", (req, res) => {
+  const customListName = req.params.customListName;
+
+  List.findOne({ name: customListName }, (err, foundLists) => {
+    if (err) {
+      console.log(err);
+    } else if (!foundLists) {
+      const list = new List({
+        name: customListName,
+        items: defaultItems,
+      });
+      list.save();
+      res.redirect("/" + customListName);
+    } else {
+      res.render("list", {
+        listTitle: foundLists.name,
+        newListItems: foundLists.items,
+      });
+    }
   });
 });
 
 app.post("/", function (req, res) {
-  const item = req.body.newItem;
+  const itemName = req.body.newItem;
+  const dynamicItem = new Item({
+    name: itemName,
+  });
 
-  if (req.body.list === "Work") {
-    workItems.push(item);
-    res.redirect("/work");
-  } else {
-    items.push(item);
-    res.redirect("/");
-  }
+  dynamicItem.save();
+  res.redirect("/");
 });
 
-app.get("/work", function (req, res) {
-  res.render("list", { listTitle: "Work List", newListItems: workItems });
+app.post("/delete", (req, res) => {
+  const checkedItem = req.body.checkedbox;
+
+  console.log(checkedItem);
+
+  Item.findByIdAndRemove(checkedItem, (err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("successfully deleted the item");
+      res.redirect("/");
+    }
+  });
 });
 
 app.get("/about", function (req, res) {
