@@ -12,7 +12,15 @@ h1 {
 
 .box {
   max-width: 400px;
-  margin: 50px auto;
+  margin: 20px auto;
+  background: white;
+  border-radius: 5px;
+  box-shadow: 5px 5px 15px -5px rgba(0, 0, 0, 0.3);
+}
+.box-heading {
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto;
   background: white;
   border-radius: 5px;
   box-shadow: 5px 5px 15px -5px rgba(0, 0, 0, 0.3);
@@ -72,7 +80,18 @@ form.item {
   margin-left: 20px;
 }
 
-button {
+.weather-button {
+  min-height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  border-color: transparent;
+  color: #fff;
+  font-size: 30px;
+  padding-bottom: 2px;
+  border-width: 0;
+  cursor: pointer;
+}
+.submit-button {
   min-height: 50px;
   width: 50px;
   border-radius: 50%;
@@ -82,6 +101,7 @@ button {
   font-size: 30px;
   padding-bottom: 2px;
   border-width: 0;
+  cursor: pointer;
 }
 
 input[type="text"] {
@@ -103,6 +123,26 @@ input[type="text"]:focus {
 ::placeholder {
   color: grey;
   opacity: 1;
+}
+
+/* weather bar */
+.container {
+}
+.row {
+  display: flex;
+  flex-direction: row;
+}
+.column {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.sidebar {
+  max-width: 100%;
+  margin: 50px auto;
+  background: white;
+  border-radius: 5px;
+  box-shadow: 5px 5px 15px -5px rgba(0, 0, 0, 0.3);
 }
 
 footer {

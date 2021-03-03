@@ -1,32 +1,40 @@
 <%- include("header") -%>
-
-    <div class="box" id="heading">
-        <h1>
-            <%= listTitle %>
-        </h1>
-    </div>
-
-    <div class="box">
-        <div class="item_container">
-            <% newListItems.forEach((item)=>{ %>
-                <form action="/delete" method="post">
-                    <div class="box_item">
-                        <input type="checkbox" name="checkedbox" onchange="this.form.submit()" value="<%= item.id %>">
-                        <p>
-                            <%= item.name %>
-                        </p>
-
+    <div class="container">
+        <div class="row">
+            <%- include("weatherBar") -%>
+                <div class="column">
+                    <div class="box-heading " id="heading">
+                        <h1>
+                            <%= listTitle %>
+                        </h1>
                     </div>
 
-                </form>
+                    <div class="box">
+                        <div class="item_container">
+                            <% newListItems.forEach((item)=>{ %>
+                                <form action="/delete" method="post">
+                                    <div class="box_item">
+                                        <input type="checkbox" name="checkedbox" onchange="this.form.submit()"
+                                            value="<%= item.id %>">
+                                        <p>
+                                            <%= item.name %>
+                                        </p>
 
-                <% }) %>
+                                    </div>
+                                    <input type="hidden" name="listName" value="<%= listTitle %>"></input>
+                                </form>
+
+                                <% }) %>
+                        </div>
+
+                        <form class="item" action="/" method="post">
+                            <input type="text" name="newItem" placeholder="New Item" autocomplete="off">
+                            <button class="submit-button" type="submit" name="list" value="<%= listTitle %>">+</button>
+                        </form>
+                    </div>
+                </div>
+                <%- include("weatherBar") -%>
         </div>
-
-        <form class="item" action="/" method="post">
-            <input type="text" name="newItem" placeholder="New Item" autocomplete="off">
-            <button type="submit" name="list">+</button>
-        </form>
-
     </div>
+
     <%- include("footer") -%>
