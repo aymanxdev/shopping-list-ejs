@@ -1,8 +1,14 @@
-<div class="column">
+<!-- <div class="column">
     <div class="sidebar">
-        <form class="item" action="/" method="post">
-            <input type="text" name="newItem" placeholder="New Item" autocomplete="off">
-            <button class="weather-button" type="submit" name="list" value="<%= listTitle %>">&#128269;</button>
+        <form class="item" action="/weather" method="post">
+            <input type="text" name="cityName" placeholder="City Name" autocomplete="off">
+            <button class="weather-button" type="submit">&#128269;</button>
         </form>
+        <div class="box_item">
+            <p> The current weather in <%= city %> is
+                    <%= weatherDay %> and temperature <%= temperature %>
+            </p>
+
+        </div>
     </div>
-</div>
+</div> -->
